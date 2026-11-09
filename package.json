@@ -8,6 +8,8 @@
   "scripts": {
     "start": "electron ./index.js",
     "compile": "grunt compile",
+    "pre-build": "grunt pre-build",
+    "build": "grunt build",
     "test": "npm run ava && npm run jest",
     "ava": "cross-env NODE_ENV=test ava --serial",
     "jest": "jest",
