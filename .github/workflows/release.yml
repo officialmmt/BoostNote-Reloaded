@@ -1,0 +1,79 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            artifact_patterns: |
+              dist/BoostnoteSetup.exe
+              dist/boost-*-full.nupkg
+              dist/RELEASES
+          - os: macos-13
+            platform: osx
+            artifact_patterns: |
+              dist/Boostnote-mac.dmg
+              dist/Boostnote-mac.zip
+          - os: ubuntu-22.04
+            platform: linux
+            artifact_patterns: |
+              dist/*.deb
+              dist/*.rpm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 10.24.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: '10.24.1'
+          architecture: 'x64'
+
+      - name: Configure Git protocol rewrite
+        run: git config --global url."https://github.com/".insteadOf git://github.com/
+
+      - name: Install Linux build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y fakeroot rpm
+
+      - name: Install macOS build dependencies
+        if: runner.os == 'macOS'
+        run: npm install -g appdmg
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build and package
+        run: npm run build
+
+      - name: Upload build artifacts (CI Run Summary)
+        uses: actions/upload-artifact@v4
+        with:
+          name: boostnote-${{ matrix.platform }}
+          path: ${{ matrix.artifact_patterns }}
+          if-no-files-found: warn
+
+      - name: Publish to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.artifact_patterns }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
