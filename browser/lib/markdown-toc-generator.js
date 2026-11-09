@@ -21,7 +21,13 @@ function uniqueSlug(slug, slugs, opts) {
 }
 
 function linkify(token) {
-  token.content = mdlink(token.content, `#${decodeURI(token.slug)}`)
+  let slug = token.slug
+  try {
+    slug = decodeURI(token.slug)
+  } catch (e) {
+    // keep raw slug if decodeURI fails
+  }
+  token.content = mdlink(token.content, `#${slug}`)
   return token
 }
 
@@ -89,9 +95,11 @@ export function generate(markdownText) {
 }
 
 function wrapTocWithEol(toc, editor) {
-  const leftWrap = editor.getCursor().ch === 0 ? '' : EOL
+  const cursor = editor.getCursor()
+  const leftWrap = cursor.ch === 0 ? '' : EOL
+  const line = editor.getLine(cursor.line)
   const rightWrap =
-    editor.getLine(editor.getCursor().line).length === editor.getCursor().ch
+    line && line.length === cursor.ch
       ? ''
       : EOL
   return leftWrap + toc + rightWrap

@@ -258,7 +258,14 @@ export default class CodeEditor extends React.Component {
       },
       [translateHotkey(hotkey.prettifyMarkdown)]: cm => {
         // Default / User configured prettier options
-        const currentConfig = JSON.parse(self.props.prettierConfig)
+        let currentConfig
+        try {
+          currentConfig = JSON.parse(self.props.prettierConfig)
+        } catch (e) {
+          console.warn('Invalid prettier configuration:', e)
+          return
+        }
+        if (!currentConfig || typeof currentConfig !== 'object') return
 
         // Parser type will always need to be markdown so we override the option before use
         currentConfig.parser = 'markdown'

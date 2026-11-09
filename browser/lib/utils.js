@@ -50,6 +50,7 @@ export function escapeHtmlCharacters(
       // then push it into an array
       // then the array returned will be like this:
       // [startCodeblock, endCodeBlock, startCodeBlock, endCodeBlock]
+      matchCodeBlockRegExp.lastIndex = 0
       while ((openCodeBlock = matchCodeBlockRegExp.exec(html)) !== null) {
         codeBlockIndexs.push(openCodeBlock.index)
       }

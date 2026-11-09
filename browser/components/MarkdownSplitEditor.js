@@ -58,27 +58,31 @@ class MarkdownSplitEditor extends React.Component {
           }
         }
 
-        if (blocks.length === 1) {
-          const block = blockElements[blockElements.length - 1]
+        if (blocks.length === 0) {
+          top = 0
+        } else {
+          if (blocks.length === 1) {
+            const block = blockElements[blockElements.length - 1]
 
-          blocks.push({
-            line: editor.doc.size,
-            top: block.offsetTop + block.offsetHeight
-          })
+            blocks.push({
+              line: editor.doc.size,
+              top: block.offsetTop + block.offsetHeight
+            })
+          }
+
+          const i = blocks.length - 1
+
+          const ratio =
+            (blocks[i].top - blocks[i - 1].top) /
+            (blocks[i].line - blocks[i - 1].line)
+
+          const delta = Math.floor(_.get(previewDoc, 'body.clientHeight') / 3)
+
+          top =
+            blocks[i - 1].top +
+            Math.floor((line - blocks[i - 1].line) * ratio) -
+            delta
         }
-
-        const i = blocks.length - 1
-
-        const ratio =
-          (blocks[i].top - blocks[i - 1].top) /
-          (blocks[i].line - blocks[i - 1].line)
-
-        const delta = Math.floor(_.get(previewDoc, 'body.clientHeight') / 3)
-
-        top =
-          blocks[i - 1].top +
-          Math.floor((line - blocks[i - 1].line) * ratio) -
-          delta
       }
 
       this.scrollTo(previewTop, top, y =>
@@ -136,23 +140,27 @@ class MarkdownSplitEditor extends React.Component {
           }
         }
 
-        if (blocks.length === 1) {
-          const block = blockElements[blockElements.length - 1]
+        if (blocks.length === 0) {
+          top = 0
+        } else {
+          if (blocks.length === 1) {
+            const block = blockElements[blockElements.length - 1]
 
-          blocks.push({
-            line: codeDoc.size,
-            top: block.offsetTop + block.offsetHeight
-          })
+            blocks.push({
+              line: codeDoc.size,
+              top: block.offsetTop + block.offsetHeight
+            })
+          }
+
+          const i = blocks.length - 1
+
+          const ratio =
+            (blocks[i].top - blocks[i - 1].top) /
+            (blocks[i].line - blocks[i - 1].line)
+
+          top =
+            blocks[i - 1].top + Math.floor((line - blocks[i - 1].line) * ratio)
         }
-
-        const i = blocks.length - 1
-
-        const ratio =
-          (blocks[i].top - blocks[i - 1].top) /
-          (blocks[i].line - blocks[i - 1].line)
-
-        top =
-          blocks[i - 1].top + Math.floor((line - blocks[i - 1].line) * ratio)
       }
 
       this.scrollTo(previewTop, top, y =>
@@ -194,24 +202,28 @@ class MarkdownSplitEditor extends React.Component {
           }
         }
 
-        if (blocks.length === 1) {
-          const block = blockElements[blockElements.length - 1]
+        if (blocks.length === 0) {
+          top = 0
+        } else {
+          if (blocks.length === 1) {
+            const block = blockElements[blockElements.length - 1]
 
-          blocks.push({
-            line: codeDoc.size,
-            top: block.offsetTop + block.offsetHeight
-          })
+            blocks.push({
+              line: codeDoc.size,
+              top: block.offsetTop + block.offsetHeight
+            })
+          }
+
+          const i = blocks.length - 1
+
+          const from = codeDoc.cm.heightAtLine(blocks[i - 1].line, 'local')
+          const to = codeDoc.cm.heightAtLine(blocks[i].line, 'local')
+
+          const ratio =
+            (previewTop - blocks[i - 1].top) / (blocks[i].top - blocks[i - 1].top)
+
+          top = from + Math.floor((to - from) * ratio) - delta
         }
-
-        const i = blocks.length - 1
-
-        const from = codeDoc.cm.heightAtLine(blocks[i - 1].line, 'local')
-        const to = codeDoc.cm.heightAtLine(blocks[i].line, 'local')
-
-        const ratio =
-          (previewTop - blocks[i - 1].top) / (blocks[i].top - blocks[i - 1].top)
-
-        top = from + Math.floor((to - from) * ratio) - delta
       }
 
       this.scrollTo(editorTop, top, y => codeDoc.cm.scrollTo(0, y))
@@ -356,7 +368,7 @@ class MarkdownSplitEditor extends React.Component {
     editorStyle.fontSize = editorFontSize
 
     let editorIndentSize = parseInt(config.editor.indentSize, 10)
-    if (!(editorStyle.fontSize > 0 && editorStyle.fontSize < 132))
+    if (!(editorIndentSize > 0 && editorIndentSize < 132))
       editorIndentSize = 4
     editorStyle.indentSize = editorIndentSize
 

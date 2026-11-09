@@ -316,38 +316,30 @@ class MarkdownPreview extends React.Component {
   componentWillUnmount() {
     const { onDrop } = this.props
 
-    this.refs.root.contentWindow.document.body.removeEventListener(
-      'contextmenu',
-      this.contextMenuHandler
-    )
-    this.refs.root.contentWindow.document.removeEventListener(
-      'mousedown',
-      this.mouseDownHandler
-    )
-    this.refs.root.contentWindow.document.removeEventListener(
-      'mouseup',
-      this.mouseUpHandler
-    )
-    this.refs.root.contentWindow.document.removeEventListener(
-      'dblclick',
-      this.DoubleClickHandler
-    )
-    this.refs.root.contentWindow.document.removeEventListener(
-      'drop',
-      onDrop || this.preventImageDroppedHandler
-    )
-    this.refs.root.contentWindow.document.removeEventListener(
-      'dragover',
-      this.preventImageDroppedHandler
-    )
-    this.refs.root.contentWindow.document.removeEventListener(
-      'scroll',
-      this.scrollHandler
-    )
-    this.refs.root.contentWindow.removeEventListener(
-      'resize',
-      this.resizeHandler
-    )
+    try {
+      const iframe = this.refs.root
+      const win = iframe && iframe.contentWindow
+      const doc = win && win.document
+      const body = doc && doc.body
+
+      if (body) {
+        body.removeEventListener('contextmenu', this.contextMenuHandler)
+      }
+      if (doc) {
+        doc.removeEventListener('mousedown', this.mouseDownHandler)
+        doc.removeEventListener('mouseup', this.mouseUpHandler)
+        doc.removeEventListener('dblclick', this.DoubleClickHandler)
+        doc.removeEventListener('drop', onDrop || this.preventImageDroppedHandler)
+        doc.removeEventListener('dragover', this.preventImageDroppedHandler)
+        doc.removeEventListener('scroll', this.scrollHandler)
+      }
+      if (win) {
+        win.removeEventListener('resize', this.resizeHandler)
+      }
+    } catch (e) {
+      console.warn('Failed to clean up MarkdownPreview DOM listeners', e)
+    }
+
     eventEmitter.off('export:save-text', this.saveAsTextHandler)
     eventEmitter.off('export:save-md', this.saveAsMdHandler)
     eventEmitter.off('export:save-html', this.saveAsHtmlHandler)

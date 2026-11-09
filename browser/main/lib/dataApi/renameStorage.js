@@ -19,12 +19,10 @@ function renameStorage(key, name) {
     return Promise.reject(err)
   }
   const targetStorage = _.find(cachedStorageList, { key: key })
-  if (targetStorage == null) return Promise.reject('Storage')
+  if (targetStorage == null) return Promise.reject(new Error('Storage not found'))
 
   targetStorage.name = name
   localStorage.setItem('storages', JSON.stringify(cachedStorageList))
-
-  targetStorage.path
 
   return resolveStorageData(targetStorage)
 }

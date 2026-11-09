@@ -90,8 +90,12 @@ function rollbackExport(tasks) {
   })
 
   folders.forEach(folder => {
-    if (fs.readdirSync(folder).length === 0) {
-      fs.rmdirSync(folder)
+    try {
+      if (fs.existsSync(folder) && fs.readdirSync(folder).length === 0) {
+        fs.rmdirSync(folder)
+      }
+    } catch (e) {
+      // ignore rollback cleanup errors
     }
   })
 }

@@ -333,8 +333,14 @@ class StorageItem extends React.Component {
         draggedOver: null
       })
     }
-    const noteData = JSON.parse(e.dataTransfer.getData('note'))
-    this.dropNote(storage, folder, dispatch, location, noteData)
+    const rawData = e.dataTransfer.getData('note')
+    if (!rawData) return
+    try {
+      const noteData = JSON.parse(rawData)
+      this.dropNote(storage, folder, dispatch, location, noteData)
+    } catch (err) {
+      console.error('Invalid dropped note data:', err)
+    }
   }
 
   render() {

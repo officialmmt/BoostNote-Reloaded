@@ -64,7 +64,7 @@ function validateInput(input) {
         } else {
           validatedInput.snippets = input.snippets
         }
-        validatedInput.snippets.filter(snippet => {
+        validatedInput.snippets = validatedInput.snippets.filter(snippet => {
           if (!_.isString(snippet.name)) return false
           if (!_.isString(snippet.mode)) return false
           if (!_.isString(snippet.content)) return false
@@ -101,7 +101,7 @@ function updateNote(storageKey, noteKey, input) {
         input.type === 'SNIPPET_NOTE'
           ? {
               type: 'SNIPPET_NOTE',
-              description: [],
+              description: '',
               snippets: [
                 {
                   name: '',
@@ -126,10 +126,6 @@ function updateNote(storageKey, noteKey, input) {
       noteData.isTrashed = false
       noteData.tags = []
       noteData.isPinned = false
-    }
-
-    if (noteData.type === 'SNIPPET_NOTE') {
-      noteData.title
     }
 
     Object.assign(noteData, input, {

@@ -22,11 +22,13 @@ class SnippetManager {
   init() {
     if (fs.existsSync(consts.SNIPPET_FILE)) {
       try {
-        this.snippets = JSON.parse(
+        const parsed = JSON.parse(
           fs.readFileSync(consts.SNIPPET_FILE, { encoding: 'UTF-8' })
         )
+        this.snippets = Array.isArray(parsed) ? parsed : this.defaultSnippet
       } catch (error) {
         console.log('Error while parsing snippet file')
+        this.snippets = this.defaultSnippet
       }
       return
     }
@@ -44,12 +46,18 @@ class SnippetManager {
 
   expandSnippet(wordBeforeCursor, cursor, cm) {
     const templateCursorString = ':{}'
+    if (!Array.isArray(this.snippets)) return false
+
     for (let i = 0; i < this.snippets.length; i++) {
-      if (this.snippets[i].prefix.indexOf(wordBeforeCursor.text) === -1) {
+      const item = this.snippets[i]
+      if (!item || !Array.isArray(item.prefix) || typeof item.content !== 'string') {
         continue
       }
-      if (this.snippets[i].content.indexOf(templateCursorString) !== -1) {
-        const snippetLines = this.snippets[i].content.split('\n')
+      if (item.prefix.indexOf(wordBeforeCursor.text) === -1) {
+        continue
+      }
+      if (item.content.indexOf(templateCursorString) !== -1) {
+        const snippetLines = item.content.split('\n')
         let cursorLineNumber = 0
         let cursorLinePosition = 0
 
@@ -66,7 +74,7 @@ class SnippetManager {
         }
 
         cm.replaceRange(
-          this.snippets[i].content.replace(templateCursorString, ''),
+          item.content.replace(templateCursorString, ''),
           wordBeforeCursor.range.from,
           wordBeforeCursor.range.to
         )
@@ -76,7 +84,7 @@ class SnippetManager {
         })
       } else {
         cm.replaceRange(
-          this.snippets[i].content,
+          item.content,
           wordBeforeCursor.range.from,
           wordBeforeCursor.range.to
         )

@@ -1,7 +1,12 @@
 const _ = require('lodash')
 
 export function findStorage(storageKey) {
-  const cachedStorageList = JSON.parse(localStorage.getItem('storages'))
+  let cachedStorageList
+  try {
+    cachedStorageList = JSON.parse(localStorage.getItem('storages'))
+  } catch (e) {
+    throw new Error("Target storage doesn't exist.")
+  }
   if (!_.isArray(cachedStorageList))
     throw new Error("Target storage doesn't exist.")
   const storage = _.find(cachedStorageList, { key: storageKey })

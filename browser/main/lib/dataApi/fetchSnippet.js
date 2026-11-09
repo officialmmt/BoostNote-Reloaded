@@ -5,16 +5,24 @@ function fetchSnippet(id, snippetFile) {
   return new Promise((resolve, reject) => {
     fs.readFile(snippetFile || consts.SNIPPET_FILE, 'utf8', (err, data) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
-      const snippets = JSON.parse(data)
+      let snippets
+      try {
+        snippets = JSON.parse(data)
+      } catch (parseErr) {
+        return reject(parseErr)
+      }
+      if (!Array.isArray(snippets)) {
+        return reject(new Error('Snippet data is not an array'))
+      }
       if (id) {
         const snippet = snippets.find(snippet => {
-          return snippet.id === id
+          return snippet && snippet.id === id
         })
-        resolve(snippet)
+        return resolve(snippet)
       }
-      resolve(snippets)
+      return resolve(snippets)
     })
   })
 }

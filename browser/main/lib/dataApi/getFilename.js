@@ -12,9 +12,11 @@ import path from 'path'
  */
 
 function getFilename(note, fileType, directory, deduplicator) {
-  const basename = note.title
-    ? filenamify(note.title, { replacement: '_' })
-    : i18n.__('Untitled')
+  const trimmedTitle = (note && note.title ? note.title : '').trim()
+  const sanitized = trimmedTitle
+    ? filenamify(trimmedTitle, { replacement: '_' }).trim()
+    : ''
+  const basename = sanitized || i18n.__('Untitled')
 
   if (deduplicator) {
     if (deduplicator[basename]) {

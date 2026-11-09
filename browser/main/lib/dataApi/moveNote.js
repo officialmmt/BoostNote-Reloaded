@@ -75,13 +75,15 @@ function moveNote(storageKey, noteKey, newStorageKey, newFolderKey) {
           return noteData
         }
 
-        noteData.content = attachmentManagement.moveAttachments(
-          oldStorage.path,
-          newStorage.path,
-          noteKey,
-          newNoteKey,
-          noteData.content
-        )
+        if (typeof noteData.content === 'string') {
+          noteData.content = attachmentManagement.moveAttachments(
+            oldStorage.path,
+            newStorage.path,
+            noteKey,
+            newNoteKey,
+            noteData.content
+          )
+        }
         return noteData
       })
       .then(function writeAndReturn(noteData) {

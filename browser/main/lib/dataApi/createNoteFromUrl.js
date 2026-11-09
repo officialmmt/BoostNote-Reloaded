@@ -37,7 +37,7 @@ function createNoteFromUrl(
     const td = createTurndownService()
 
     if (!validateUrl(url)) {
-      reject({ result: false, error: ERROR_MESSAGES.VALIDATION_ERROR })
+      return reject({ result: false, error: ERROR_MESSAGES.VALIDATION_ERROR })
     }
 
     const request = url.startsWith('https') ? https : http
@@ -73,6 +73,11 @@ function createNoteFromUrl(
             ee.emit('list:jump', noteHash)
             ee.emit('detail:focus')
             resolve({ result: true, error: null })
+          }).catch(err => {
+            reject({
+              result: false,
+              error: (err && err.message) || ERROR_MESSAGES.UNEXPECTED
+            })
           })
         } else {
           createNote(storage, {
@@ -82,6 +87,11 @@ function createNoteFromUrl(
             content: markdownHTML
           }).then(note => {
             resolve({ result: true, note, error: null })
+          }).catch(err => {
+            reject({
+              result: false,
+              error: (err && err.message) || ERROR_MESSAGES.UNEXPECTED
+            })
           })
         }
       })
