@@ -48,7 +48,7 @@
   "bugs": {
     "url": "https://github.com/BoostIO/Boostnote/issues"
   },
-  "homepage": "https://boostnote.io",
+  "homepage": "https://github.com/officialmmt/BoostNote-Reloaded",
   "dependencies": {
     "@enyaxu/markdown-it-anchor": "^5.0.2",
     "@hikerpig/markdown-it-toc-and-anchor": "^4.5.0",

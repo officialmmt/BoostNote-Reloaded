@@ -150,7 +150,7 @@ class InfoTab extends React.Component {
             </li>
             <li>
               <a
-                href='https://boostnote.io/#subscribe'
+                href='https://github.com/officialmmt/BoostNote-Reloaded'
                 onClick={e => this.handleLinkClick(e)}
               >
                 {i18n.__('Subscribe to Newsletter')}
@@ -251,7 +251,7 @@ class InfoTab extends React.Component {
         <ul styleName='list'>
           <li>
             <a
-              href='https://boostnote.io'
+              href='https://github.com/officialmmt/BoostNote-Reloaded'
               onClick={e => this.handleLinkClick(e)}
             >
               {i18n.__('Website')}
