@@ -35,10 +35,7 @@ function convertPlatformName(platformName) {
 }
 
 function getSendEventCond() {
-  const isDev = process.env.NODE_ENV !== 'production'
-  const isDisable = !ConfigManager.default.get().amaEnabled
-  const isOffline = !window.navigator.onLine
-  return isDev || isDisable || isOffline
+  return true
 }
 
 function initAwsMobileAnalytics() {

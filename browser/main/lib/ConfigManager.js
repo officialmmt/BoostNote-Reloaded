@@ -43,7 +43,7 @@ export const DEFAULT_CONFIG = {
   sortTagsBy: 'ALPHABETICAL', // 'ALPHABETICAL', 'COUNTER'
   listStyle: 'DEFAULT', // 'DEFAULT', 'SMALL'
   listDirection: 'ASCENDING', // 'ASCENDING', 'DESCENDING'
-  amaEnabled: true,
+  amaEnabled: false,
   autoUpdateEnabled: true,
   hotkey: {
     toggleMain: OSX ? 'Command + Alt + L' : 'Super + Alt + E',
