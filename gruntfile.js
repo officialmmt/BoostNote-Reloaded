@@ -194,8 +194,14 @@ module.exports = function(grunt) {
       return
     }
 
+    if (!OSX_COMMON_NAME) {
+      grunt.log.warn('OSX_COMMON_NAME is not set. Skipping codesign.')
+      done()
+      return
+    }
+
     ChildProcess.exec(
-      `codesign --verbose --deep --force --timestamp=none --sign \"${OSX_COMMON_NAME}\" dist/Boostnote-darwin-x64/Boostnote.app`,
+      `codesign --verbose --deep --force --timestamp=none --sign "${OSX_COMMON_NAME}" dist/Boostnote-darwin-x64/Boostnote.app`,
       function(err, stdout, stderr) {
         grunt.log.writeln(stdout)
         if (err) {
