@@ -18,22 +18,30 @@ module.exports = function(grunt) {
   }
   const OSX_COMMON_NAME = authCode != null ? authCode.OSX_COMMON_NAME : ''
   const WIN_CERT_PASSWORD = authCode != null ? authCode.WIN_CERT_PASSWORD : ''
+  const WIN_CERT_PATH = path.join(__dirname, 'secret', 'authenticode_cer.p12')
+  const HAS_WIN_CERT = fs.existsSync(WIN_CERT_PATH)
 
   var initConfig = {
     pkg: grunt.file.readJSON('package.json'),
     'create-windows-installer': {
-      x64: {
-        appDirectory: path.join(__dirname, 'dist', 'Boostnote-win32-x64'),
-        outputDirectory: path.join(__dirname, 'dist'),
-        authors: 'MAISIN&CO., Inc.',
-        exe: 'Boostnote.exe',
-        loadingGif: path.join(__dirname, 'resources/boostnote-install.gif'),
-        iconUrl: path.join(__dirname, 'resources/app.ico'),
-        setupIcon: path.join(__dirname, 'resources/dmg.ico'),
-        certificateFile: path.join(__dirname, 'secret', 'authenticode_cer.p12'),
-        certificatePassword: WIN_CERT_PASSWORD,
-        noMsi: true
-      }
+      x64: Object.assign(
+        {
+          appDirectory: path.join(__dirname, 'dist', 'Boostnote-win32-x64'),
+          outputDirectory: path.join(__dirname, 'dist'),
+          authors: 'MAISIN&CO., Inc.',
+          exe: 'Boostnote.exe',
+          loadingGif: path.join(__dirname, 'resources/boostnote-install.gif'),
+          iconUrl: path.join(__dirname, 'resources/app.ico'),
+          setupIcon: path.join(__dirname, 'resources/dmg.ico'),
+          noMsi: true
+        },
+        HAS_WIN_CERT
+          ? {
+              certificateFile: WIN_CERT_PATH,
+              certificatePassword: WIN_CERT_PASSWORD
+            }
+          : {}
+      )
     },
     'electron-installer-debian': {
       app: {
