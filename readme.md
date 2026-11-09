@@ -1,46 +1,67 @@
-> # New Boost Note app is available!
->
-> We've launched a new Boost Note app which supports real-time collaborative writing.
->
-> And it is open sourced too! Please check it out! https://github.com/BoostIO/BoostNote-App
->
-> ## 📦 Download App
->
-> ### 🖥 Desktop
->
-> - [🌎 Web App (boostnote.io)](https://boostnote.io)
-> - [🍎 macOS (.dmg)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-mac.dmg)
-> - [:framed_picture: Windows (.exe NSIS)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-win.exe)
-> - [🐧 Linux (.deb)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-linux.deb)
-> - [🐧 Linux (.rpm)](https://github.com/BoostIO/BoostNote-App/releases/latest/download/boost-note-linux.rpm)
->
-> ### 📱 Mobile
->
-> - [🌎 Mobile Web App (m.boostnote.io)](https://m.boostnote.io)
-> - [🍏 iOS (Apple App Store)](https://apps.apple.com/gb/app/boost-note-mobile/id1576176505)
-> - [🤖 Android (Google Play Store)](https://play.google.com/store/apps/details?id=com.boostio.boostnote2021)
+<h1 align="center">BoostNote-Reloaded</h1>
 
-<h1 align="center">BoostNote-Legacy</h1>
-
-<h4 align="center">Note-taking app for programmers. </h4>
-<h5 align="center">Apps available for Mac, Windows and Linux.</h5>
-<h5 align="center">Built with Electron, React + Redux, Webpack, and CSSModules.</h5>
 <p align="center">
-  <a href="https://travis-ci.org/BoostIO/Boostnote">
-    <img src="https://travis-ci.org/BoostIO/Boostnote.svg?branch=master" alt="Build Status" />
-  </a>
- </p>
+  <strong>A community-maintained continuation of the classic BoostNote desktop application.</strong>
+</p>
 
-## Download
+<p align="center">
+  A note-taking app for programmers, built with Electron, React, and Redux.
+</p>
 
-[Find the latest release of Boostnote here!](https://github.com/BoostIO/boost-releases/releases/)
+> **Project status:** This fork is actively maintained and developed by **[@officialmmt](https://github.com/officialmmt)**. The original BoostNote-Legacy project is no longer the focus of upstream development; this repository continues its work independently. Contributions and feedback are welcome.
 
-#### More Information
+## About
 
-- Website: https://boostnote.io
-- [Development](https://github.com/BoostIO/Boostnote/blob/master/docs/build.md): Development configurations for Boostnote.
-- Copyright (C) 2016 - 2020 BoostIO, Inc.
+BoostNote-Reloaded is based on the classic BoostNote desktop app, created for writing and organizing notes and code snippets. It is an Electron application for macOS, Windows, and Linux.
 
-#### License
+This repository is the legacy desktop application. It is separate from the newer collaborative Boost Note product at [BoostIO/BoostNote-App](https://github.com/BoostIO/BoostNote-App).
 
-[GPL v3](./LICENSE).
+## Downloads
+
+See the [Releases page](https://github.com/officialmmt/BoostNote-Reloaded/releases) for builds published for this fork. Availability of installers may vary by release and operating system.
+
+## Development
+
+This project uses an older Electron and JavaScript toolchain. The existing build documentation specifies Node.js 8 and npm 6; newer environments may require compatibility adjustments.
+
+### Prerequisites
+
+- Node.js 8.x
+- npm 6.x
+- Yarn
+
+### Install dependencies and run
+
+From the repository root:
+
+```bash
+yarn
+yarn run dev
+```
+
+### Available commands
+
+| Command | Description |
+| --- | --- |
+| `yarn run dev` | Start the development app with the development configuration. |
+| `yarn start` | Start the app using the configured Electron entry point. |
+| `yarn test` | Run the AVA and Jest test suites. |
+| `yarn lint` | Run ESLint. |
+| `yarn compile` | Run the Grunt compile task. |
+
+For additional build and packaging details, see [`docs/build.md`](./docs/build.md). The documented packaging process uses Grunt; unsigned builds may not support the automatic updater.
+
+## Contributing
+
+Issues, suggestions, and pull requests are welcome. Before submitting a change, please:
+
+- Explain the problem or improvement clearly.
+- Include steps to reproduce or verify the change where applicable.
+- Run the relevant tests and lint checks.
+- Note any operating system or runtime limitations, especially given the project's legacy toolchain.
+
+Please open an issue in this repository for bugs or feature requests: [officialmmt/BoostNote-Reloaded/issues](https://github.com/officialmmt/BoostNote-Reloaded/issues).
+
+## License and acknowledgements
+
+This project is distributed under the [GNU General Public License v3.0](./LICENSE). BoostNote-Reloaded builds on the work of the original BoostNote project and its contributors. Copyright notices and attributions in the source code remain applicable.
