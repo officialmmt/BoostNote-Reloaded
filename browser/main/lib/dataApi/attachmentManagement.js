@@ -477,6 +477,9 @@ function handlePasteImageEvent(
   }
 
   const blob = dataTransferItem.getAsFile()
+  if (!blob) {
+    return
+  }
   const reader = new FileReader()
   let base64data
   const targetStorage = findStorage.findStorage(storageKey)
@@ -491,10 +494,9 @@ function handlePasteImageEvent(
   const imagePath = path.join(destinationDir, imageName)
 
   reader.onloadend = function() {
-    base64data = reader.result.replace(/^data:image\/png;base64,/, '')
-    base64data += base64data.replace('+', ' ')
-    const binaryData = new Buffer(base64data, 'base64').toString('binary')
-    fs.writeFileSync(imagePath, binaryData, 'binary')
+    base64data = reader.result.replace(/^data:image\/\w+;base64,/, '')
+    const binaryData = Buffer.from(base64data, 'base64')
+    fs.writeFileSync(imagePath, binaryData)
     const imageReferencePath = path.join(
       STORAGE_FOLDER_PLACEHOLDER,
       noteKey,

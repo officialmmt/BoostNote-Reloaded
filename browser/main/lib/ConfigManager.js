@@ -170,10 +170,16 @@ function _save(config) {
 
 function get() {
   const rawStoredConfig = window.localStorage.getItem('config')
+  let parsedConfig = null
+  try {
+    parsedConfig = JSON.parse(rawStoredConfig)
+  } catch (e) {
+    console.warn('Failed to parse stored config:', e)
+  }
   const storedConfig = Object.assign(
     {},
     DEFAULT_CONFIG,
-    JSON.parse(rawStoredConfig)
+    parsedConfig
   )
   let config = storedConfig
 

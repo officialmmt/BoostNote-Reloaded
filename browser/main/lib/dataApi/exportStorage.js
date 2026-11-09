@@ -65,11 +65,15 @@ function exportStorage(storageKey, fileType, exportDir, config) {
 
       return Promise.all(
         notes.map(note => {
+          const folderDir = folderNamesMapping[note.folder] || exportDir
+          const deduplicator =
+            deduplicators[note.folder] ||
+            (deduplicators['__default__'] = deduplicators['__default__'] || {})
           const targetPath = getFilename(
             note,
             fileType,
-            folderNamesMapping[note.folder],
-            deduplicators[note.folder]
+            folderDir,
+            deduplicator
           )
 
           return exportNote(storage.key, note, targetPath, contentFormatter)

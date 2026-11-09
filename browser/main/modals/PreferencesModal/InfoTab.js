@@ -29,6 +29,12 @@ class InfoTab extends React.Component {
     this.setState({ config: { autoUpdateEnabled, amaEnabled } })
   }
 
+  componentWillUnmount() {
+    if (this.amaTimeout) {
+      clearTimeout(this.amaTimeout)
+    }
+  }
+
   handleLinkClick(e) {
     shell.openExternal(e.currentTarget.href)
     e.preventDefault()
@@ -100,11 +106,14 @@ class InfoTab extends React.Component {
       })
     }
 
-    _.debounce(() => {
+    if (this.amaTimeout) {
+      clearTimeout(this.amaTimeout)
+    }
+    this.amaTimeout = setTimeout(() => {
       this.setState({
         amaMessage: ''
       })
-    }, 3000)()
+    }, 3000)
 
     ConfigManager.set(newConfig)
 

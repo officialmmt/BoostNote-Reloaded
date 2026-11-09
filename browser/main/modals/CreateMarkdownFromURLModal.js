@@ -73,7 +73,10 @@ class CreateMarkdownFromURLModal extends React.Component {
         this.props.close()
       })
       .catch(result => {
-        this.showError(result.error)
+        this.showError(
+          (result && (result.error || result.message)) ||
+            i18n.__('Import failed')
+        )
       })
   }
 

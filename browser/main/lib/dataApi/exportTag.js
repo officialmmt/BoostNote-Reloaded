@@ -12,7 +12,13 @@ import getFilename from './getFilename'
 function exportTag(data, tag, fileType, exportDir, config) {
   const notes = data.noteMap
     .map(note => note)
-    .filter(note => note.tags.indexOf(tag) !== -1)
+    .filter(
+      note =>
+        !note.isTrashed &&
+        note.type === 'MARKDOWN_NOTE' &&
+        Array.isArray(note.tags) &&
+        note.tags.indexOf(tag) !== -1
+    )
 
   const deduplicator = {}
 
