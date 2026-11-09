@@ -19,7 +19,7 @@ function createSnippet(snippetFile) {
           snippetFile || consts.SNIPPET_FILE,
           JSON.stringify(snippets, null, 4),
           err => {
-            if (err) reject(err)
+            if (err) return reject(err)
             resolve(newSnippet)
           }
         )

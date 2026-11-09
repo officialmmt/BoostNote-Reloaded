@@ -136,25 +136,28 @@ class Preferences extends React.Component {
       {
         target: 'HOTKEY',
         label: i18n.__('Hotkeys'),
-        Hotkey: this.state.HotkeyAlert
+        alert: this.state.HotkeyAlert
       },
-      { target: 'UI', label: i18n.__('Interface'), UI: this.state.UIAlert },
+      { target: 'UI', label: i18n.__('Interface'), alert: this.state.UIAlert },
       { target: 'INFO', label: i18n.__('About') },
       { target: 'CROWDFUNDING', label: i18n.__('Crowdfunding') },
-      { target: 'BLOG', label: i18n.__('Blog'), Blog: this.state.BlogAlert },
+      { target: 'BLOG', label: i18n.__('Blog'), alert: this.state.BlogAlert },
       {
         target: 'EXPORT',
         label: i18n.__('Export'),
-        Export: this.state.ExportAlert
+        alert: this.state.ExportAlert
       },
       { target: 'SNIPPET', label: i18n.__('Snippets') },
-      { target: 'PLUGINS', label: i18n.__('Plugins') }
+      {
+        target: 'PLUGINS',
+        label: i18n.__('Plugins'),
+        alert: this.state.PluginsAlert
+      }
     ]
 
     const navButtons = tabs.map(tab => {
       const isActive = this.state.currentTab === tab.target
-      const isUiHotkeyTab =
-        _.isObject(tab[tab.label]) && tab.label === tab[tab.label].tab
+      const isUiHotkeyTab = _.isObject(tab.alert)
       return (
         <button
           styleName={isActive ? 'nav-button--active' : 'nav-button'}
@@ -163,7 +166,7 @@ class Preferences extends React.Component {
         >
           <span>{tab.label}</span>
           {isUiHotkeyTab
-            ? this.haveToSaveNotif(tab[tab.label].type, tab[tab.label].message)
+            ? this.haveToSaveNotif(tab.alert.type, tab.alert.message)
             : null}
         </button>
       )

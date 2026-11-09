@@ -12,11 +12,16 @@ class SnippetList extends React.Component {
     this.state = {
       snippets: []
     }
+    this.reloadSnippetList = this.reloadSnippetList.bind(this)
   }
 
   componentDidMount() {
     this.reloadSnippetList()
-    eventEmitter.on('snippetList:reload', this.reloadSnippetList.bind(this))
+    eventEmitter.on('snippetList:reload', this.reloadSnippetList)
+  }
+
+  componentWillUnmount() {
+    eventEmitter.off('snippetList:reload', this.reloadSnippetList)
   }
 
   reloadSnippetList() {

@@ -45,6 +45,9 @@ class Main extends React.Component {
     }
 
     this.toggleFullScreen = () => this.handleFullScreenButton()
+    this.toggleMenuBarVisible = this.toggleMenuBarVisible.bind(this)
+    this.changeRoutePush = this.changeRoutePush.bind(this)
+    this.handleUpdateCheck = () => ipcRenderer.send('update-check', 'manual')
   }
 
   getChildContext() {
@@ -180,21 +183,16 @@ class Main extends React.Component {
     delete CodeMirror.keyMap.emacs['Ctrl-V']
 
     eventEmitter.on('editor:fullscreen', this.toggleFullScreen)
-    eventEmitter.on(
-      'menubar:togglemenubar',
-      this.toggleMenuBarVisible.bind(this)
-    )
-    eventEmitter.on('dispatch:push', this.changeRoutePush.bind(this))
-    eventEmitter.on('update', () => ipcRenderer.send('update-check', 'manual'))
+    eventEmitter.on('menubar:togglemenubar', this.toggleMenuBarVisible)
+    eventEmitter.on('dispatch:push', this.changeRoutePush)
+    eventEmitter.on('update', this.handleUpdateCheck)
   }
 
   componentWillUnmount() {
     eventEmitter.off('editor:fullscreen', this.toggleFullScreen)
-    eventEmitter.off(
-      'menubar:togglemenubar',
-      this.toggleMenuBarVisible.bind(this)
-    )
-    eventEmitter.off('dispatch:push', this.changeRoutePush.bind(this))
+    eventEmitter.off('menubar:togglemenubar', this.toggleMenuBarVisible)
+    eventEmitter.off('dispatch:push', this.changeRoutePush)
+    eventEmitter.off('update', this.handleUpdateCheck)
     clearInterval(this.refreshTheme)
   }
 
@@ -205,10 +203,10 @@ class Main extends React.Component {
 
   toggleMenuBarVisible() {
     const { config } = this.props
-    const { ui } = config
+    const ui = config && config.ui ? config.ui : {}
 
-    const newUI = Object.assign(ui, { showMenuBar: !ui.showMenuBar })
-    const newConfig = Object.assign(config, newUI)
+    const newUI = Object.assign({}, ui, { showMenuBar: !ui.showMenuBar })
+    const newConfig = Object.assign({}, config, { ui: newUI })
     ConfigManager.set(newConfig)
   }
 

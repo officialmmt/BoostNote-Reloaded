@@ -509,10 +509,13 @@ class SideNav extends React.Component {
       return new Set()
     }
     const relatedNotes = noteMap
-      .map(note => ({ key: note.key, tags: note.tags }))
+      .map(note => ({
+        key: note.key,
+        tags: Array.isArray(note.tags) ? note.tags : []
+      }))
       .filter(note => activeTags.every(tag => note.tags.includes(tag)))
     const relatedTags = new Set()
-    relatedNotes.forEach(note => note.tags.map(tag => relatedTags.add(tag)))
+    relatedNotes.forEach(note => note.tags.forEach(tag => relatedTags.add(tag)))
     return relatedTags
   }
 
@@ -523,7 +526,12 @@ class SideNav extends React.Component {
   getActiveTags(path) {
     const pathSegments = path.split('/')
     const tags = pathSegments[pathSegments.length - 1]
-    return tags === 'alltags' ? [] : decodeURIComponent(tags).split(' ')
+    if (tags === 'alltags') return []
+    try {
+      return decodeURIComponent(tags).split(' ')
+    } catch (e) {
+      return tags.split(' ')
+    }
   }
 
   handleClickTagListItem(name) {

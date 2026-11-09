@@ -145,12 +145,13 @@ class NoteList extends React.Component {
     ee.off('list:isMarkdownNote', this.alertIfSnippetHandler)
     ee.off('import:file', this.importFromFileHandler)
     ee.off('list:jump', this.jumpNoteByHash)
+    ee.off('list:navigate', this.navigate)
   }
 
   componentDidUpdate(prevProps) {
     const { dispatch, location } = this.props
     const { selectedNoteKeys } = this.state
-    const visibleNoteKeys = this.notes && this.notes.map(note => note.key)
+    const visibleNoteKeys = (this.notes && this.notes.map(note => note.key)) || []
     const note = this.notes && this.notes[0]
     const key = location.search && queryString.parse(location.search).key
     const prevKey =

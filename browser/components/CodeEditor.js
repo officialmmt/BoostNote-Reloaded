@@ -574,17 +574,23 @@ export default class CodeEditor extends React.Component {
   }
 
   componentWillUnmount() {
+    this.debouncedDeletionOfAttachments.cancel()
     this.editor.off('focus', this.focusHandler)
     this.editor.off('blur', this.blurHandler)
     this.editor.off('change', this.changeHandler)
     this.editor.off('paste', this.pasteHandler)
     eventEmitter.off('top:search', this.searchHandler)
+    eventEmitter.off('line:jump', this.scrollToLineHandeler)
     this.editor.off('scroll', this.scrollHandler)
     this.editor.off('cursorActivity', this.editorActivityHandler)
-    this.editor.off('contextmenu', this.contextMenuHandler)
+    if (this.contextMenuHandler) {
+      this.editor.off('contextmenu', this.contextMenuHandler)
+    }
 
     const editorTheme = document.getElementById('editorTheme')
-    editorTheme.removeEventListener('load', this.loadStyleHandler)
+    if (editorTheme) {
+      editorTheme.removeEventListener('load', this.loadStyleHandler)
+    }
 
     spellcheck.setLanguage(null, spellcheck.SPELLCHECK_DISABLED)
     eventEmitter.off('code:format-table', this.formatTable)
