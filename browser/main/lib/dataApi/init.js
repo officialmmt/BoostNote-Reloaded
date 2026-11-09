@@ -26,9 +26,11 @@ function init() {
     let rawStorages
     try {
       rawStorages = JSON.parse(window.localStorage.getItem('storages'))
-      // Remove storages who's location is inaccesible.
-      rawStorages = rawStorages.filter(storage => fs.existsSync(storage.path))
       if (!_.isArray(rawStorages)) throw new Error('Cached data is not valid.')
+      // Remove storages who's location is inaccesible.
+      rawStorages = rawStorages.filter(
+        storage => storage && storage.path && fs.existsSync(storage.path)
+      )
     } catch (e) {
       console.warn('Failed to parse cached data from localStorage', e)
       rawStorages = []

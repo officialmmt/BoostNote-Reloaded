@@ -110,14 +110,20 @@ class StoragesTab extends React.Component {
     const totalAttachments = totalUnusedAttachments + totalInuseAttachments
 
     const totalUnusedAttachmentsSize = unusedAttachments.reduce((acc, curr) => {
-      const stats = fs.statSync(curr.path)
-      const fileSizeInBytes = stats.size
-      return acc + fileSizeInBytes
+      try {
+        const stats = fs.statSync(curr.path)
+        return acc + stats.size
+      } catch (e) {
+        return acc
+      }
     }, 0)
     const totalInuseAttachmentsSize = inUseAttachments.reduce((acc, curr) => {
-      const stats = fs.statSync(curr.path)
-      const fileSizeInBytes = stats.size
-      return acc + fileSizeInBytes
+      try {
+        const stats = fs.statSync(curr.path)
+        return acc + stats.size
+      } catch (e) {
+        return acc
+      }
     }, 0)
     const totalAttachmentsSize =
       totalUnusedAttachmentsSize + totalInuseAttachmentsSize

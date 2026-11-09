@@ -571,7 +571,7 @@ function getAttachmentsInMarkdownContent(markdownContent) {
     path.sep
   )
   const regexp = new RegExp(
-    '/?' +
+    '(?:' + escapeStringRegexp(path.sep) + ')?' +
       STORAGE_FOLDER_PLACEHOLDER +
       '(' +
       escapeStringRegexp(path.sep) +
@@ -580,7 +580,7 @@ function getAttachmentsInMarkdownContent(markdownContent) {
       '(' +
       escapeStringRegexp(path.sep) +
       ')' +
-      '([a-zA-Z0-9]|\\.)+(\\.[a-zA-Z0-9]+)?',
+      '[^"\\)<>\\s\\r\\n' + escapeStringRegexp(path.sep) + ']+',
     'g'
   )
   return preparedInput.match(regexp)
@@ -628,7 +628,7 @@ function importAttachments(markDownContent, filepath, storageKey, noteKey) {
         ? attachmentPath
         : path.join(path.dirname(filepath), attachmentPath)
       promiseArray.push(
-        this.copyAttachment(attachmentPath, storageKey, noteKey)
+        copyAttachment(attachmentPath, storageKey, noteKey)
       )
       attachPath = nameRegex.exec(markDownContent)
     }
@@ -781,18 +781,15 @@ function deleteAttachmentsNotPresentInNote(
   const attachmentsInNoteOnlyFileNames = []
   if (attachmentsInNote) {
     for (let i = 0; i < attachmentsInNote.length; i++) {
-      attachmentsInNoteOnlyFileNames.push(
-        attachmentsInNote[i].replace(
-          new RegExp(
-            STORAGE_FOLDER_PLACEHOLDER +
-              escapeStringRegexp(path.sep) +
-              noteKey +
-              escapeStringRegexp(path.sep),
-            'g'
-          ),
-          ''
-        )
-      )
+      const match = attachmentsInNote[i]
+      const fileName = path.basename(match)
+      attachmentsInNoteOnlyFileNames.push(fileName)
+      try {
+        const decoded = decodeURIComponent(fileName)
+        if (decoded !== fileName) {
+          attachmentsInNoteOnlyFileNames.push(decoded)
+        }
+      } catch (e) {}
     }
   }
   if (fs.existsSync(attachmentFolder)) {
@@ -860,18 +857,15 @@ function getAttachmentsPathAndStatus(markdownContent, storageKey, noteKey) {
   const attachmentsInNoteOnlyFileNames = []
   if (attachmentsInNote) {
     for (let i = 0; i < attachmentsInNote.length; i++) {
-      attachmentsInNoteOnlyFileNames.push(
-        attachmentsInNote[i].replace(
-          new RegExp(
-            STORAGE_FOLDER_PLACEHOLDER +
-              escapeStringRegexp(path.sep) +
-              noteKey +
-              escapeStringRegexp(path.sep),
-            'g'
-          ),
-          ''
-        )
-      )
+      const match = attachmentsInNote[i]
+      const fileName = path.basename(match)
+      attachmentsInNoteOnlyFileNames.push(fileName)
+      try {
+        const decoded = decodeURIComponent(fileName)
+        if (decoded !== fileName) {
+          attachmentsInNoteOnlyFileNames.push(decoded)
+        }
+      } catch (e) {}
     }
   }
   if (fs.existsSync(attachmentFolder)) {
@@ -1045,11 +1039,11 @@ function handleAttachmentLinkPaste(storageKey, noteKey, linkText) {
             )
             replaceInstructions.push({
               regexp: fileNotFoundRegexp,
-              replacement: this.generateFileNotFoundMarkdown()
+              replacement: generateFileNotFoundMarkdown()
             })
             return Promise.resolve()
           }
-          return this.copyAttachment(
+          return copyAttachment(
             absPathOfAttachment,
             storageKey,
             noteKey
