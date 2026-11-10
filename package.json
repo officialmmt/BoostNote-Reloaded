@@ -7,9 +7,9 @@
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron ./index.js",
-    "compile": "node -e \"require('grunt').cli()\" compile",
-    "pre-build": "node -e \"require('grunt').cli()\" pre-build",
-    "build": "node -e \"require('grunt').cli()\" build",
+    "compile": "node dev-scripts/grunt.js compile",
+    "pre-build": "node dev-scripts/grunt.js pre-build",
+    "build": "node dev-scripts/grunt.js build",
     "test": "npm run ava && npm run jest",
     "ava": "cross-env NODE_ENV=test ava --serial",
     "jest": "jest",
