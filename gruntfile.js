@@ -98,7 +98,12 @@ module.exports = function(grunt) {
       {
         env: Object.assign({}, process.env, {
           BABEL_ENV: 'production',
-          NODE_ENV: 'production'
+          NODE_ENV: 'production',
+          NODE_OPTIONS:
+            process.env.NODE_OPTIONS ||
+            (parseInt(process.versions.node.split('.')[0], 10) >= 17
+              ? '--openssl-legacy-provider'
+              : '')
         })
       },
       function(err, stdout, stderr) {

@@ -38,11 +38,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 10.24.1
+      - name: Setup Node.js 18
         uses: actions/setup-node@v4
         with:
-          node-version: '10.24.1'
-          architecture: 'x64'
+          node-version: '18'
+          cache: 'npm'
 
       - name: Configure Git protocol rewrite
         run: git config --global url."https://github.com/".insteadOf git://github.com/
@@ -58,9 +58,11 @@ jobs:
         run: npm install -g appdmg
 
       - name: Install npm dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build and package
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
         run: npm run build
 
       - name: Upload build artifacts (CI Run Summary)
