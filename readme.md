@@ -7,13 +7,13 @@
 
 <p align="center">
   <a href="https://github.com/officialmmt/BoostNote-Reloaded/releases">
-    <img alt="Download" src="https://img.shields.io/badge/Download-Releases-blue?style=for-the-badge">
+    <img alt="Total downloads" src="https://img.shields.io/github/downloads/officialmmt/BoostNote-Reloaded/total?style=for-the-badge&label=Downloads&color=blue">
   </a>
   <a href="https://github.com/officialmmt/BoostNote-Reloaded/issues">
-    <img alt="Report issue" src="https://img.shields.io/badge/Report-Issue-orange?style=for-the-badge">
+    <img alt="Open issues" src="https://img.shields.io/github/issues/officialmmt/BoostNote-Reloaded?style=for-the-badge&label=Open%20issues&color=orange">
   </a>
   <a href="https://github.com/officialmmt/BoostNote-Reloaded/blob/master/LICENSE">
-    <img alt="License" src="https://img.shields.io/badge/License-GPL--3.0-green?style=for-the-badge">
+    <img alt="License" src="https://img.shields.io/github/license/officialmmt/BoostNote-Reloaded?style=for-the-badge&color=green">
   </a>
 </p>
 
@@ -33,7 +33,7 @@ This repository is the legacy desktop application. It is separate from the newer
 
 ## Downloads
 
-See the [Releases page](https://github.com/officialmmt/BoostNote-Reloaded/releases) for builds published for this fork. Availability of installers may vary by release and operating system.
+See the [Releases page](https://github.com/officialmmt/BoostNote-Reloaded/releases) for builds published for this fork. The **Downloads** badge above shows the total number of assets downloaded across all GitHub releases. Availability of installers may vary by release and operating system.
 
 ## Development
 
