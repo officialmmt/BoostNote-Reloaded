@@ -1,14 +1,29 @@
 <h1 align="center">BoostNote-Reloaded</h1>
 
 <p align="center">
-  <strong>A community-maintained continuation of the classic BoostNote desktop application.</strong>
+  <strong>Classic BoostNote’un topluluk tarafından sürdürülen devamı.</strong><br>
+  Programcılar için Electron, React ve Redux ile geliştirilmiş not uygulaması.
 </p>
 
 <p align="center">
-  A note-taking app for programmers, built with Electron, React, and Redux.
+  <a href="https://github.com/officialmmt/BoostNote-Reloaded/releases">
+    <img alt="İndir" src="https://img.shields.io/badge/İndir-Sürümler-blue?style=for-the-badge">
+  </a>
+  <a href="https://github.com/officialmmt/BoostNote-Reloaded/issues">
+    <img alt="Hata bildir" src="https://img.shields.io/badge/Hata%20bildir-Issue-orange?style=for-the-badge">
+  </a>
+  <a href="https://github.com/officialmmt/BoostNote-Reloaded/blob/master/LICENSE">
+    <img alt="Lisans" src="https://img.shields.io/badge/Lisans-GPL--3.0-green?style=for-the-badge">
+  </a>
 </p>
 
-> **Project status:** This fork is actively maintained and developed by **[@officialmmt](https://github.com/officialmmt)**. The original BoostNote-Legacy project is no longer the focus of upstream development; this repository continues its work independently. Contributions and feedback are welcome.
+<p align="center">
+  <a href="#about">Hakkında</a> ·
+  <a href="#development">Geliştirme</a> ·
+  <a href="#contributing">Katkıda bulun</a>
+</p>
+
+> **Proje durumu:** Bu fork, [@officialmmt](https://github.com/officialmmt) tarafından aktif olarak sürdürülmektedir. Orijinal BoostNote-Legacy projesi artık upstream geliştirme odağının dışındadır.
 
 ## About
 
@@ -64,4 +79,4 @@ Please open an issue in this repository for bugs or feature requests: [officialm
 
 ## License and acknowledgements
 
-This project is distributed under the [GNU General Public License v3.0](./LICENSE). BoostNote-Reloaded builds on the work of the original BoostNote project and its contributors. Copyright notices and attributions in the source code remain applicable.
+This project is distributed under the [GNU General Public License v3.0](./LICENSE). BoostNote-Reloaded builds on the work of the original BoostNote project and its contributors. Copyright notices and [...]
