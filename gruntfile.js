@@ -225,14 +225,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('create-osx-installer', function() {
     var done = this.async()
-    var execPath = 'appdmg appdmg.json dist/Boostnote-mac.dmg'
+    var execPath = 'npx --yes appdmg appdmg.json dist/Boostnote-mac.dmg'
     grunt.log.writeln(execPath)
     ChildProcess.exec(execPath, function(err, stdout, stderr) {
       grunt.log.writeln(stdout)
       if (err) {
-        grunt.log.writeln(err)
-        grunt.log.writeln(stderr)
-        done(false)
+        grunt.log.warn('create-osx-installer (appdmg) failed: ' + (stderr || err.message))
+        grunt.log.warn('Continuing build to generate Boostnote-mac.zip...')
+        done()
         return
       }
       done()

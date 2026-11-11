@@ -23,7 +23,7 @@ jobs:
               dist/BoostnoteSetup.exe
               dist/boost-*-full.nupkg
               dist/RELEASES
-          - os: macos-13
+          - os: macos-latest
             platform: osx
             artifact_patterns: |
               dist/Boostnote-mac.dmg
