@@ -26,8 +26,7 @@ jobs:
           - os: macos-latest
             platform: osx
             artifact_patterns: |
-              dist/Boostnote-mac.dmg
-              dist/Boostnote-mac.zip
+              dist/Boostnote-mac.*
           - os: ubuntu-22.04
             platform: linux
             artifact_patterns: |
@@ -42,6 +41,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+          architecture: 'x64'
           cache: 'npm'
 
       - name: Configure Git protocol rewrite
@@ -55,10 +55,13 @@ jobs:
 
       - name: Install macOS build dependencies
         if: runner.os == 'macOS'
+        continue-on-error: true
         run: npm install -g appdmg
 
       - name: Install npm dependencies
-        run: npm install --legacy-peer-deps
+        env:
+          npm_config_arch: x64
+        run: npm install --legacy-peer-deps --arch=x64
 
       - name: Build and package
         env:
